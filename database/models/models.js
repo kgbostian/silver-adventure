@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize')
-const sequelize = new Sequelize('postgres://localhost:5432/medium')
+const sequelize = new Sequelize(`postgres://localhost:5432/medium`)
 
 
 const User = sequelize.define('user', {
@@ -17,4 +17,4 @@ sequelize.sync({ force: true }).then(() => {
 })
 
 
-module.export = sequelize;
+module.exports = sequelize;
