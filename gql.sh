@@ -6,7 +6,7 @@ function get_users
   curl -g \
   -X POST \
   -H "Content-Type: application/json" \
-  -d '{ "query": "{ users{ firstName } }" }' \
+  -d '{ "query": "{ users(id:1){ firstName } }" }' \
   http://localhost:$PORT/graphql
 }
 
@@ -16,7 +16,7 @@ function create_user
   curl -g \
   -X POST \
   -H "Content-Type: application/json" \
-  -d '{ "mutation($name:String!){ addUser( firstName: $name ){name} }" }' \
+  -d '{ "mutation": "{ addUsers("Kyle"){} }" }' \
   http://localhost:$PORT/graphql
 }
 
