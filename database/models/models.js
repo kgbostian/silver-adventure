@@ -1,5 +1,8 @@
 const Sequelize = require('sequelize')
-const sequelize = new Sequelize(`postgres://localhost:5432/medium`)
+const HOST = "localhost"
+const PORT = "5432"
+const DATABASE = "medium"
+const sequelize = new Sequelize(`postgres://${HOST}:${PORT}/${DATABASE}`)
 
 
 const User = sequelize.define('user', {
