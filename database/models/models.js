@@ -13,6 +13,26 @@ const User = sequelize.define('user', {
     unique: true
   }
 })
+
+const Song = sequelize.define('song', {
+  //attributes
+  title: {
+    type: sequelize.STRING,
+    allowNull:false,
+    unique: true
+  },
+  //relates user to song.
+  user: {
+    type: sequelize.model.User,
+    allowNull: false
+  },
+  total_plays: {
+    type: Sequelize.DataTypes.Integer
+  }
+  votes: {
+    type: Sequelize.DataTypes.Integer
+  }
+})
 //{ force: true }
 // sequelize.sync().then(() => {
 //   return User.create({
