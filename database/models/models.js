@@ -9,15 +9,16 @@ const User = sequelize.define('user', {
   // attributes
   firstName: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
+    unique: true
   }
 })
-
-sequelize.sync({ force: true }).then(() => {
-  return User.create({
-    firstName: 'Dons'
-  })
-})
+//{ force: true }
+// sequelize.sync().then(() => {
+//   return User.create({
+//     firstName: 'Dons'
+//   })
+// })
 
 
 module.exports = sequelize;

@@ -1,5 +1,5 @@
 #!/bin/bash
-PORT=3000
+PORT=5000
 function get_users
 {
   local id=$1
