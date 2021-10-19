@@ -2,6 +2,7 @@ const db = require('../models/models')
 
 const {GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLSchema, GraphQLList, GraphQLNonNull } = require('graphql')
 
+
 const User = new GraphQLObjectType({
   name: 'User',
   description: 'this represents a user',
@@ -22,6 +23,7 @@ const User = new GraphQLObjectType({
     }
   }
 })
+
 
 const Query = new GraphQLObjectType({
   name: 'Query',
@@ -62,6 +64,21 @@ const Mutation = new GraphQLObjectType({
         resolve(_, args) {
           return db.models.user.create({
             firstName: args.firstName
+          })
+        }
+      },
+      removeUser: {
+        type: User,
+        args: {
+          firstName: {
+            type: new GraphQLNonNull(GraphQLString)
+          }
+        },
+        resolve(_, args) {
+          return db.models.user.destroy({
+            where: {
+              firstName: args.firstName
+            }
           })
         }
       }

@@ -62,18 +62,18 @@ test(" GET /api/posts", async () => {
   } catch (error) {
     console.log("ERROR: ERROR");
   }
-  try {
-    await supertest(app)
-      .post("/graphql")
-      .send({query :`mutation { addUser( firstName:"Travis") { firstName } }` })
-      // .expect(200)
-      .then((response) => {      
-        // Check type and length
-        console.log(response.text); 
-      })
-  } catch (error) {
-    console.log("ERROR: ERROR");
-  }
+  // try {
+  //   await supertest(app)
+  //     .post("/graphql")
+  //     .send({query :`mutation { addUser( firstName:"Travis") { firstName } }` })
+  //     // .expect(200)
+  //     .then((response) => {      
+  //       // Check type and length
+  //       console.log(response.text); 
+  //     })
+  // } catch (error) {
+  //   console.log("ERROR: ERROR");
+  // }
 });
 // test(" Add Song", async () => {
 //   try {
