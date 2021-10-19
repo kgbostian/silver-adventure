@@ -65,9 +65,32 @@ const Mutation = new GraphQLObjectType({
           })
         }
       }
-    }
+    } 
   }
 })
+
+// const UserMutation = new GraphQLObjectType({
+//   name: 'Mutation',
+//   description: 'Functions to delete things',
+//   fields: () => {
+//     return {
+//       deleteUser: {
+//         type: User,
+//         args: {
+//           firstName: {
+//             type: new GraphQLNonNull(GraphQLString)
+//           }
+//         },
+//         resolve(_, args) {
+//           return db.models.user.create({
+//             firstName: args.firstName
+//           })
+//         }
+//       }
+//     },
+//   }
+// })
+
 
 const Schema = new GraphQLSchema({
   query: Query,

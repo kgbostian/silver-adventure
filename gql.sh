@@ -10,6 +10,16 @@ function get_users
   http://localhost:$PORT/graphql
 }
 
+function get_songs
+{
+  local id=$1
+  curl -g \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{ "query": "{ songs{ title } }" }' \
+  http://localhost:$PORT/graphql
+}
+
 function create_user
 {
   local name="$1"
@@ -22,4 +32,5 @@ function create_user
 
 #create_user TestUser
 get_users
+get_songs
     

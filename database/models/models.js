@@ -1,4 +1,4 @@
-const Sequelize = require('sequelize')
+const {DataTypes, Sequelize} = require('sequelize')
 const HOST = "localhost"
 const PORT = "5432"
 const DATABASE = "medium"
@@ -17,28 +17,50 @@ const User = sequelize.define('user', {
 const Song = sequelize.define('song', {
   //attributes
   title: {
-    type: sequelize.STRING,
+    type: Sequelize.STRING,
     allowNull:false,
     unique: true
   },
-  //relates user to song.
-  user: {
-    type: sequelize.model.User,
-    allowNull: false
-  },
   total_plays: {
-    type: Sequelize.DataTypes.Integer
-  }
+    type: DataTypes.INTEGER
+  },
   votes: {
-    type: Sequelize.DataTypes.Integer
+    type: DataTypes.INTEGER
   }
 })
-//{ force: true }
-// sequelize.sync().then(() => {
+
+const seed = () => {
+  return Promise.all([
+    Song.create({title: 'TestSong', total_plays: 0, votes: 0}),
+    // Song.create({title: 'A Song', total_plays: 1, votes: 11}),
+    // Song.create({title: 'B Song', total_plays: 3, votes: 33}),
+    User.create({firstName: 'TestUser'})
+  ])
+  .then(([testsong, testuser]) => {
+    return Promise.all([
+      testsong.setUser(testuser),
+      // asong.setUser(testuser),
+      // bsong.setUser(testuser)
+    ]);
+  })
+  .catch(error => console.log(error));
+};
+
+// sequelize.sync().then(() => seed());
+
+// sequelize.sync({ force: true }).then(() => {
 //   return User.create({
 //     firstName: 'Dons'
 //   })
+//   .then(() => {
+//     return Song.create({
+//       title: 'Test Song'
+//     })
+//   }
 // })
+
+
+User.hasMany(Song);
 
 
 module.exports = sequelize;
