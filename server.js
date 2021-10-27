@@ -8,7 +8,10 @@ const app = express()
 
 // app.use(json());
 
-app.use('/graphql', graphqlHTTP({ schema: Schema, graphql: true }))
+app.use('/graphql', graphqlHTTP({ 
+  schema: Schema, 
+  graphql: true 
+}))
 
 
 module.exports = app;

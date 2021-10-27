@@ -1,34 +1,16 @@
 const app = require("../server")
 const supertest = require("supertest");
-const { query } = require("express");
-const { graphql } = require("graphql");
-const Schema = require("../database/schema/schema")
 
-
-// This passes because 1 === 1
-
-const seed = () => {
-  return Promise.all([
-    Song.create({title: 'TestSong', total_plays: 0, votes: 0}),
-    Song.create({title: 'A Song', total_plays: 1, votes: 11}),
-    Song.create({title: 'B Song', total_plays: 3, votes: 33}),
-    User.create({firstName: 'TestUser'})
-  ])
-  .then(([testsong, asong, bsong, testuser]) => {
-    return Promise.all([
-      testsong.setUser(testuser),
-      asong.setUser(testuser),
-      bsong.setUser(testuser)
-    ]);
-  })
-  .catch(error => console.log(error));
+const seed = async () => {
+  await (await supertest(app).post ("graphql")).send({
+    query: `mutation { addUser( firstName:"TestSeed") { firstName } }`,
+  });
 };
-
-// beforeAll((done) => {
-//   console.log("Before all tests.");
-//   // sequelize.sync({ force: true })
-//   //   .then(() => seed())
-// });
+ 
+beforeAll((done) => {
+  console.log("Before all tests.");
+  seed()
+});
 
 // beforeEach((done) => {
 //   console.log("Before each test.");
@@ -42,31 +24,6 @@ const seed = () => {
 //   console.log("After all tests.");
 // });
 
-// let getUserPost = {
-//   query: `query users{ 
-//     firstName 
-//   } }`
-// };
-
-// function getUsers() {
-//   try {
-//     graphql(Schema, '{firstName}', '/graphql/user').then((response) => { console.log(response);});
-//   } catch(error) {
-//     console.log(error);
-//   }
-    // try {
-  //   supertest(app)
-  //     .post("/graphql")
-  //     .send({query :`{ users{firstName} }`})
-  //     .then((response) => {      
-  //       // Check type and length
-  //       console.log(response.text); 
-  //       expect(response.text.includes("name"));
-  //     })
-  // } catch (error) {
-  //   console.log(error.text);
-  // }
-// }
 
 test(" GET /api/posts", async () => {
   try {

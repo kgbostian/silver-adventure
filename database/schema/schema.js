@@ -1,131 +1,84 @@
 const db = require('../models/models')
 
-const { Query, GraphQLObjectType, GraphQLString, GraphQLInt, GraphQLSchema, GraphQLList, GraphQLNonNull } = require('graphql')
+const typeDefs = /* GraphQL */`
+  type Author {
+    id: Int!
+    firstName: String
+    lastName: String
+    """
+    the list of Posts by this author
+    """
+    posts: [Post]
+  }
 
-type User {
-  name: String!
-}
+  type Post {
+    id: Int!
+    title: String
+    author: Author
+    votes: Int
+  }
 
-type Song {
-  name: String!
-  user_name: User!
-}
+  # the schema allows the following query:
+  type Query {
+    posts: [Post]
+    author(id: Int!): Author
+  }
 
-type Query {
-  user: User!
-  song: Song!
-}
+  # this schema allows the following mutation:
+  type Mutation {
+    upvotePost (
+      postId: Int!
+    ): Post
+  }
+`;
 
-const Schema = new GraphQLSchema({
-  query: Query,
-  mutation: Mutation
-})
+const { find, filter } = require('lodash');
 
-// const User = new GraphQLObjectType({
-//   name: 'User',
-//   description: 'this represents a user',
-//   fields: () => {
-//     return {
-//       id: {
-//         type: GraphQLInt,
-//         resolve(user) {
-//           return user.id
-//         }
-//       },
-//       firstName: {
-//         type: GraphQLString,
-//         resolve(user) {
-//           return user.firstName
-//         }
-//       }
-//     }
-//   }
-// })
+// example data
+const authors = [
+  { id: 1, firstName: 'Tom', lastName: 'Coleman' },
+  { id: 2, firstName: 'Sashko', lastName: 'Stubailo' },
+  { id: 3, firstName: 'Mikhail', lastName: 'Novikov' },
+];
 
+const posts = [
+  { id: 1, authorId: 1, title: 'Introduction to GraphQL', votes: 2 },
+  { id: 2, authorId: 2, title: 'Welcome to Meteor', votes: 3 },
+  { id: 3, authorId: 2, title: 'Advanced GraphQL', votes: 1 },
+  { id: 4, authorId: 3, title: 'Launchpad is Cool', votes: 7 },
+];
 
-// const Query = new GraphQLObjectType({
-//   name: 'Query',
-//   description: 'this is a root query',
-//   fields: () => {
-//     return {
-//       users: {
-//         type: new GraphQLList(User),
-//         args: {
-//           id: {
-//             type: GraphQLInt
-//           },
-//           firstName: {
-//             type: GraphQLString
-//           }
-//         },
-//         //validations can go here
-//         resolve(root, args) {
-//           return db.models.user.findAll({ where: args })
-//         }
-//       }
-//     }
-//   }
-// })
+const resolvers = {
+  Query: {
+    posts: () => posts,
+    author: (_, { id }) => find(authors, { id }),
+  },
 
-// const Mutation = new GraphQLObjectType({
-//   name: 'Mutation',
-//   description: 'Functions to create things',
-//   fields: () => {
-//     return {
-//       addUser: {
-//         type: User,
-//         args: {
-//           firstName: {
-//             type: new GraphQLNonNull(GraphQLString)
-//           }
-//         },
-//         resolve(_, args) {
-//           return db.models.user.create({
-//             firstName: args.firstName
-//           })
-//         }
-//       },
-//       removeUser: {
-//         type: User,
-//         args: {
-//           firstName: {
-//             type: new GraphQLNonNull(GraphQLString)
-//           }
-//         },
-//         resolve(_, args) {
-//           return db.models.user.destroy({
-//             where: {
-//               firstName: args.firstName
-//             }
-//           })
-//         }
-//       }
-//     } 
-//   }
-// })
+  Mutation: {
+    upvotePost: (_, { postId }) => {
+      const post = find(posts, { id: postId });
+      if (!post) {
+        throw new Error(`Couldn't find post with id ${postId}`);
+      }
+      post.votes += 1;
+      return post;
+    },
+  },
 
-// const UserMutation = new GraphQLObjectType({
-//   name: 'Mutation',
-//   description: 'Functions to delete things',
-//   fields: () => {
-//     return {
-//       deleteUser: {
-//         type: User,
-//         args: {
-//           firstName: {
-//             type: new GraphQLNonNull(GraphQLString)
-//           }
-//         },
-//         resolve(_, args) {
-//           return db.models.user.create({
-//             firstName: args.firstName
-//           })
-//         }
-//       }
-//     },
-//   }
-// })
+  Author: {
+    posts: author => filter(posts, { authorId: author.id }),
+  },
 
+  Post: {
+    author: post => find(authors, { id: post.authorId }),
+  },
+};
 
+const { makeExecutableSchema } = require('@graphql-tools/schema');
 
-module.exports = Schema
+const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers,
+});
+
+module.exports = schema
