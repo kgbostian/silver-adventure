@@ -8,6 +8,10 @@ const sequelize = new Sequelize(`postgres://${HOST}:${PORT}/${DATABASE}`)
 
 const Author = sequelize.define('author', {
   // attributes
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true
+  },
   firstName: {
     type: Sequelize.STRING,
     allowNull: false,
@@ -21,6 +25,10 @@ const Author = sequelize.define('author', {
 
 const Post = sequelize.define('post', {
   //attributes
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true
+  },
   title: {
     type: Sequelize.STRING
   },

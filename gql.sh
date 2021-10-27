@@ -7,11 +7,24 @@ function get_users
   curl -g \
   -X POST \
   -H "Content-Type: application/json" \
-  -d '{ "query": "{ users{ firstName } }" }' \
+  -d '{ "query": "{ author ( id: 1 ) { firstName } }" }' \
   http://localhost:$PORT/graphql
   echo ""
   echo "***************************"
 }
+
+# function get_users
+# {
+#   echo "Get User"
+#   local id=$1
+#   curl -g \
+#   -X POST \
+#   -H "Content-Type: application/json" \
+#   -d '{ "query": "{ users{ firstName } }" }' \
+#   http://localhost:$PORT/graphql
+#   echo ""
+#   echo "***************************"
+# }
 
 function get_songs
 {
@@ -57,8 +70,8 @@ function delete_user
   echo "***************************"
 }
 
-create_user TestUser
+# create_user TestUser
 get_users
-delete_user
-get_users
+# delete_user
+# get_users
 # get_songs
