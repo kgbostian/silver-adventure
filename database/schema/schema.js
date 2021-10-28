@@ -1,16 +1,6 @@
 const db = require('../models/models')
 
-const typeDefs = /* GraphQL */`
-  type Author {
-    id: Int!
-    firstName: String
-    lastName: String
-    """
-    the list of Posts by this author
-    """
-    posts: [Post]
-  }
-
+const restOfShit = /* GraphQL */`
   type Post {
     id: Int!
     title: String
@@ -76,8 +66,10 @@ const resolvers = {
 
 const { makeExecutableSchema } = require('@graphql-tools/schema');
 
+const Author = require("./Author");
+
 const schema = makeExecutableSchema({
-  typeDefs,
+  typeDefs: [Author, restOfShit],
   resolvers,
 });
 
