@@ -4,14 +4,12 @@ const restOfShit = /* GraphQL */`
   type Post {
     id: Int!
     title: String
-    author: Author
     votes: Int
   }
 
   # the schema allows the following query:
   type Query {
     posts: [Post]
-    author(id: Int!): Author
   }
 
   # this schema allows the following mutation:
@@ -22,7 +20,7 @@ const restOfShit = /* GraphQL */`
   }
 `;
 
-const { find, filter } = require('lodash');
+const { find, merge } = require('lodash');
 
 // example data
 const authors = [
@@ -38,10 +36,9 @@ const posts = [
   { id: 4, authorId: 3, title: 'Launchpad is Cool', votes: 7 },
 ];
 
-const resolvers = {
+const resolvers_other = {
   Query: {
     posts: () => posts,
-    author: (_, { id }) => find(authors, { id }),
   },
 
   Mutation: {
@@ -54,23 +51,17 @@ const resolvers = {
       return post;
     },
   },
-
-  Author: {
-    posts: author => filter(posts, { authorId: author.id }),
-  },
-
-  Post: {
-    author: post => find(authors, { id: post.authorId }),
-  },
 };
 
 const { makeExecutableSchema } = require('@graphql-tools/schema');
 
-const Author = require("./Author");
+const {typeDef: Author, resolvers: authorResolvers} = require("./Author");
+const {typeDef: User, resolvers: userResolvers} = require("./user_schema");
+const resolvers = {};
 
 const schema = makeExecutableSchema({
-  typeDefs: [Author, restOfShit],
-  resolvers,
+  typeDefs: [Author, User, restOfShit],
+  resolvers: merge(resolvers, resolvers_other, authorResolvers, userResolvers),
 });
 
 module.exports = schema
