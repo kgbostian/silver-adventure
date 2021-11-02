@@ -50,7 +50,7 @@ function create_user
   curl -g \
   -X POST \
   -H "Content-Type: application/json" \
-  -d '{ "query": "mutation { addUser( firstName: \"Travis\") { firstName } }" }' \
+  -d '{ "query": "mutation { addUser( id: 1) { firstName } }" }' \
   http://localhost:$PORT/graphql
   echo ""
   echo "***************************"
@@ -70,7 +70,7 @@ function delete_user
   echo "***************************"
 }
 
-# create_user TestUser
+create_user TestUser
 get_users
 # delete_user
 # get_users
