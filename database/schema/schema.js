@@ -50,10 +50,6 @@ const resolvers_other = {
       post.votes += 1;
       return post;
     },
-    addUser: (_, { id }) => {
-      db.models.user.create({ id, firstName:"Test", lastName:"User"})
-    },
-
   },
 };
 
