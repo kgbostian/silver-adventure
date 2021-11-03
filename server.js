@@ -1,17 +1,23 @@
-const express = require("express");
-// import routes from "./routes/posts";
-const { graphqlHTTP } = require('express-graphql')
-const Schema = require('./database/schema/schema')
+const dotenv = require('dotenv');
 
-const app = express()
-// const port = 3000
+process.on('uncaughtException', (err) => {
+  console.log('Unaught exception occurred.');
+  console.log(err.name, err.message);
+  process.exit(1);
+});
 
-// app.use(json());
+dotenv.config({ path: './.env' });
+const app = require('./app');
 
-app.use('/graphql', graphqlHTTP({ 
-  schema: Schema, 
-  graphql: true 
-}))
+const port = process.env.PORT || 3000;
+const server = app.listen(port, () => {
+  console.log(`App running on port ${port}`);
+});
 
-
-module.exports = app;
+process.on('unhandledRejection', (err) => {
+  console.log('Unhandled Rejection occurred.');
+  console.log(err.name, err.message);
+  server.close(() => {
+    process.exit(1);
+  });
+});
