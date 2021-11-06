@@ -1,7 +1,7 @@
 const express = require("express");
 // import routes from "./routes/posts";
 const { graphqlHTTP } = require('express-graphql')
-const Schema = require('./database/schema/schema')
+const Schema = require('./schema/schema')
 
 const app = express()
 // const port = 3000
