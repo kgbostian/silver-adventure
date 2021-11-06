@@ -1,6 +1,10 @@
-const { find, merge } = require('lodash');
+const { find, merge } = require("lodash");
+const { makeExecutableSchema } = require("@graphql-tools/schema");
+const { typeDef: userTypes } = require("./User/user.types");
+const { resolvers: userResolvers } = require("./User/user.resolvers");
+const resolvers = {};
 
-const restOfShit = /* GraphQL */`
+const restOfShit = /* GraphQL */ `
   type Post {
     id: Int!
     title: String
@@ -14,19 +18,16 @@ const restOfShit = /* GraphQL */`
 
   # this schema allows the following mutation:
   type Mutation {
-    upvotePost (
-      postId: Int!
-    ): Post
+    upvotePost(postId: Int!): Post
   }
 `;
 
-
 // example data
 const posts = [
-  { id: 1, authorId: 1, title: 'Introduction to GraphQL', votes: 2 },
-  { id: 2, authorId: 2, title: 'Welcome to Meteor', votes: 3 },
-  { id: 3, authorId: 2, title: 'Advanced GraphQL', votes: 1 },
-  { id: 4, authorId: 3, title: 'Launchpad is Cool', votes: 7 },
+  { id: 1, authorId: 1, title: "Introduction to GraphQL", votes: 2 },
+  { id: 2, authorId: 2, title: "Welcome to Meteor", votes: 3 },
+  { id: 3, authorId: 2, title: "Advanced GraphQL", votes: 1 },
+  { id: 4, authorId: 3, title: "Launchpad is Cool", votes: 7 },
 ];
 
 const resolvers_other = {
@@ -46,15 +47,9 @@ const resolvers_other = {
   },
 };
 
-const { makeExecutableSchema } = require('@graphql-tools/schema');
-
-const {typeDef: userTypes} = require("./User/user.types");
-const {resolvers: userResolvers} = require("./User/user.resolvers");
-const resolvers = {};
-
 const schema = makeExecutableSchema({
   typeDefs: [userTypes, restOfShit],
   resolvers: merge(resolvers, userResolvers, resolvers_other),
 });
 
-module.exports = schema
+module.exports = schema;
