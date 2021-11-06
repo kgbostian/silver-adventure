@@ -1,15 +1,19 @@
 {
-  "name": "medium",
+  "name": "Silver Squash",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "jest --detectOpenHandles",
-    "dev": "nodemon --inspect --exec babel-node index.js --source-maps"
+    "dev": "nodemon --inspect --exec babel-node app.js --source-maps",
+    "start": "nodemon server.js",
+    "start:prod": "NODE_ENV=production nodemon server.js",
+    "debug": "ndb server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-graphql": "^0.11.0",
     "graphiql": "^1.0.3",

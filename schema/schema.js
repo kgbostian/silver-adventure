@@ -48,13 +48,13 @@ const resolvers_other = {
 
 const { makeExecutableSchema } = require('@graphql-tools/schema');
 
-const {typeDef: UserTypes} = require("./User/user.types");
-const {resolvers: user_resolvers} = require("./User/user.resolvers");
+const {typeDef: userTypes} = require("./User/user.types");
+const {resolvers: userResolvers} = require("./User/user.resolvers");
 const resolvers = {};
 
 const schema = makeExecutableSchema({
-  typeDefs: [UserTypes, restOfShit],
-  resolvers: merge(resolvers, user_resolvers, resolvers_other),
+  typeDefs: [userTypes, restOfShit],
+  resolvers: merge(resolvers, userResolvers, resolvers_other),
 });
 
 module.exports = schema
