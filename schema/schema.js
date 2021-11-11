@@ -52,4 +52,4 @@ const schema = makeExecutableSchema({
   resolvers: merge(resolvers, userResolvers, resolvers_other),
 });
 
-module.exports = schema;
+module.exports = { schema };
