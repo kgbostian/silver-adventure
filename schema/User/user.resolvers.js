@@ -7,6 +7,8 @@ const resolvers = {
       return {
         firstName: x.dataValues.firstName,
         lastName: x.dataValues.lastName,
+        username: x.dataValues.username,
+        email: x.dataValues.email,
       };
     },
     getAllUsers: (_, __) => {
@@ -16,8 +18,13 @@ const resolvers = {
     },
   },
   Mutation: {
-    addUser: (_, { firstName, lastName }) =>
-      db.models.user.create({ firstName, lastName }),
+    addUser: (_, { firstName, lastName, username }) =>
+      db.models.user.create({ firstName, lastName, username }),
+    updateEmail: (_, { in_username, in_email }) =>
+      db.models.user.update(
+        { email: in_email },
+        { where: { username: in_username } }
+      ),
   },
 };
 

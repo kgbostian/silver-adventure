@@ -7,10 +7,13 @@ const typeDef = `
   type User {
     firstName: String
     lastName: String
+    username: String
+    email: String
   }
   
   type Mutation {
-      addUser(firstName: String, lastName: String): User
+      addUser(firstName: String, lastName: String, username: String): User
+      updateEmail( in_username: String, in_email: String ): User
   },
 `;
 
