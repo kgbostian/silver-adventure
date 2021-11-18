@@ -25,6 +25,13 @@ const resolvers = {
         { email: in_email },
         { where: { username: in_username } }
       ),
+    updateUser: async (_, { in_user }) => {
+      let x = await db.models.user.update(
+        { firstName: in_user["firstName"] },
+        { where: { id: 1 } }
+      );
+      console.log(x);
+    },
   },
 };
 
