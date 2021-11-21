@@ -20,7 +20,7 @@ const typeDef = `
   type Mutation {
       addUser(firstName: String, lastName: String, username: String): User
       updateEmail( in_username: String, in_email: String ): User
-      updateUser ( in_user: UserInput ): User
+      updateUser ( in_username: String, in_user: UserInput ): User
   },
 `;
 

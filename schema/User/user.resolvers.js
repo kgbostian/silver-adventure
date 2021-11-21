@@ -25,10 +25,27 @@ const resolvers = {
         { email: in_email },
         { where: { username: in_username } }
       ),
-    updateUser: async (_, { in_user }) => {
+    updateUser: async (_, { in_username, in_user }) => {
+      let { firstName, lastName, username, email } = in_user;
+      let current_info = await db.models.user.findOne({
+        where: { username: in_username },
+      });
+      console.log(current_info.dataValues.firstName);
+      if (typeof firstName === undefined) {
+        firstName = current_info.dataValues.firstName;
+      }
+      if (typeof lastName === undefined) {
+        lastName = current_info.dataValues.lastName;
+      }
+      if (typeof username === undefined) {
+        username = current_info.dataValues.username;
+      }
+      if (typeof email === undefined) {
+        email = current_info.dataValues.email;
+      }
       let x = await db.models.user.update(
-        { firstName: in_user["firstName"] },
-        { where: { id: 1 } }
+        { firstName, lastName, username, email },
+        { where: { username: in_username } }
       );
       console.log(x);
     },
