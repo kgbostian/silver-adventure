@@ -13,7 +13,7 @@ const resolvers = {
     },
     getAllUsers: (_, __) => {
       return db.models.user.findAll({
-        attributes: ["id", "firstName", "lastName"],
+        attributes: ["id", "firstName", "lastName", "username", "email"],
       });
     },
   },
@@ -26,23 +26,25 @@ const resolvers = {
         { where: { username: in_username } }
       ),
     updateUser: async (_, { in_username, in_user }) => {
-      let { firstName, lastName, username, email } = in_user;
       let current_info = await db.models.user.findOne({
         where: { username: in_username },
       });
-      console.log(current_info.dataValues.firstName);
-      if (typeof firstName === undefined) {
-        firstName = current_info.dataValues.firstName;
-      }
-      if (typeof lastName === undefined) {
-        lastName = current_info.dataValues.lastName;
-      }
-      if (typeof username === undefined) {
-        username = current_info.dataValues.username;
-      }
-      if (typeof email === undefined) {
-        email = current_info.dataValues.email;
-      }
+      let { firstName = current_info.dataValues.firstName } = in_user;
+      let { lastName = current_info.dataValues.lastName } = in_user;
+      let { username = current_info.dataValues.username } = in_user;
+      let { email = current_info.dataValues.email } = in_user;
+      // if (typeof firstName === undefined) {
+      //   firstName = ;
+      // }
+      // if (typeof lastName === undefined) {
+      //   lastName = current_info.dataValues.lastName;
+      // }
+      // if (typeof username === undefined) {
+      //   username = current_info.dataValues.username;
+      // }
+      // if (typeof email === undefined) {
+      //   email = current_info.dataValues.email;
+      // }
       let x = await db.models.user.update(
         { firstName, lastName, username, email },
         { where: { username: in_username } }

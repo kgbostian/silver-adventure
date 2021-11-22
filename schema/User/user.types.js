@@ -15,6 +15,8 @@ const typeDef = `
     id: Int
     firstName: String
     lastName: String
+    userName: String
+    email: String
   }
   
   type Mutation {
