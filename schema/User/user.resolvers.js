@@ -33,23 +33,30 @@ const resolvers = {
       let { lastName = current_info.dataValues.lastName } = in_user;
       let { username = current_info.dataValues.username } = in_user;
       let { email = current_info.dataValues.email } = in_user;
-      // if (typeof firstName === undefined) {
-      //   firstName = ;
-      // }
-      // if (typeof lastName === undefined) {
-      //   lastName = current_info.dataValues.lastName;
-      // }
-      // if (typeof username === undefined) {
-      //   username = current_info.dataValues.username;
-      // }
-      // if (typeof email === undefined) {
-      //   email = current_info.dataValues.email;
-      // }
       let x = await db.models.user.update(
         { firstName, lastName, username, email },
         { where: { username: in_username } }
       );
       console.log(x);
+    },
+    registerUser: async (_, { new_user }) => {
+      if (
+        (await db.models.user.count({
+          where: { username: new_user.username },
+        })) === 0
+      ) {
+        console.log("Here.");
+        let { firstName = "" } = new_user;
+        let { lastName = "" } = new_user;
+        let username = new_user.username;
+        let email = new_user.email;
+        return await db.models.user
+          .create({ firstName, lastName, username, email })
+          .catch("Failed to register user.");
+      } else {
+        console.log("User Exists in db.");
+        return new Error("Username already exists.");
+      }
     },
   },
 };

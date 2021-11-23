@@ -15,7 +15,7 @@ const typeDef = `
     id: Int
     firstName: String
     lastName: String
-    userName: String
+    username: String
     email: String
   }
   
@@ -23,6 +23,7 @@ const typeDef = `
       addUser(firstName: String, lastName: String, username: String): User
       updateEmail( in_username: String, in_email: String ): User
       updateUser ( in_username: String, in_user: UserInput ): User
+      registerUser(new_user: UserInput): User
   },
 `;
 
