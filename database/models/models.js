@@ -88,6 +88,6 @@ const Song = sequelize.define("song", {
   },
 });
 
-sequelize.sync({force: true});
+// sequelize.sync({force: true});
 
 module.exports = sequelize;
