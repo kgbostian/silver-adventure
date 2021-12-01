@@ -15,7 +15,6 @@ const User = sequelize.define("user", {
   // attributes
   firstName: {
     type: Sequelize.STRING,
-    allowNull: false,
   },
   lastName: {
     type: Sequelize.STRING,
@@ -27,7 +26,51 @@ const User = sequelize.define("user", {
   },
   email: {
     type: Sequelize.TEXT,
+    allowNull: false,
+    unique: true,
   },
+});
+
+const UserFan = sequelize.define("userfan", {
+  //This table stores the view configuration for a user. This provides
+  //a way for a single user account to switch between the performer 
+  //and fan modes using the same account, but have different view
+  //preferences.
+  showFavoriteArtists: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: true
+  },
+  showFavoriteSongs: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: true
+  },
+  user_id: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: User,
+      key: 'id',
+      deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE
+    }
+  }
+});
+
+const UserPerformer = sequelize.define("userperformer", {
+  showFavoriteArtists: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: true
+  },
+  showFavoriteSongs: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: true
+  },
+  user_id: {
+    type: Sequelize.INTEGER,
+    references: {
+      model: User,
+      key: 'id',
+      deferrable: Sequelize.Deferrable.INITIALLY_IMMEDIATE
+    }
+  }
 });
 
 const Song = sequelize.define("song", {
@@ -45,6 +88,6 @@ const Song = sequelize.define("song", {
   },
 });
 
-// sequelize.sync();
+sequelize.sync({force: true});
 
 module.exports = sequelize;

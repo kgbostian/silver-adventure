@@ -42,10 +42,9 @@ const resolvers = {
     registerUser: async (_, { new_user }) => {
       if (
         (await db.models.user.count({
-          where: { username: new_user.username },
+          where: { email: new_user.email },
         })) === 0
       ) {
-        console.log("Here.");
         let { firstName = "" } = new_user;
         let { lastName = "" } = new_user;
         let username = new_user.username;
